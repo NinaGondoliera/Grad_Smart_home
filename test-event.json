@@ -1,0 +1,9 @@
+{
+    "source": "smart_home_server",
+    "detail-type": "motionTriggered",
+    "detail": {
+      "name": "Motion Tracker",
+      "state": "Triggered"
+    }
+  }
+  
