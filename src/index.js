@@ -37,7 +37,7 @@ app.get('/devices', (req, res) => {
   }); 
 });
 
-// Endpoint to disconnect device
+// Endpoint to disconnect a device
 app.delete('/devices/:name', (req, res) => {
   console.log(req.params);
   const device_name = req.params.name;
@@ -60,7 +60,6 @@ app.delete('/devices/:name', (req, res) => {
   });
 });
 
-// Start server
 app.listen(PORT, () => {
   console.log(`Server is running on port ${PORT}`);
 });

@@ -16,9 +16,11 @@
 If you are not authenticated, use 
 ``` aws configure``` 
 
-and provide your login credentials, please keep the region "eu-west-2". 
+and provide your login credentials, please keep the region "eu-west-2".  
 
-## 2. Navigate to the terraform directory and run 
+***Currently all of the terraform operations have been performed by the root user, as issuing policies and permissions to IAM roles has required wide authorisation***
+
+## 2. To issue the infrastructure necessary for the functioning of the IoT platform, navigate to the terraform directory and run 
 
 ``` terraform init ``` 
 
@@ -27,6 +29,17 @@ followed by
 ``` terraform apply``` 
 
 Type "yes" when prompted to create the necessary infrastructure. 
+
+### Infrastructure that will be created in AWS: 
+
+* DynamoDB Table "Devices", with "name" as partition key
+* EventBridge eventbus for routing of events between different devices independently of each other.
+The current rule is an example, configured to react to a Motion Tracker being triggered by someone entering a room, and triggering the switching on of a Light in the corresponding room.
+* Lambda function, invoked to switch on the Light 
+* IAM role, policies and policy documents to grant Lambda access to DynamoDB and allow EventBridge to trigger Lambda
+* CloudWatch group for monitoring Lambda invocations and behaviour
+
+### When the infrastructure has been issued, 
 
 ## 3. Navigate to the root level of the project and run ## 
 
@@ -47,12 +60,15 @@ Type "yes" when prompted to create the necessary infrastructure.
 ```node connect_device.js``` 
 
  This connects two external components to the infrastructure, with their state turned to "Off" by default. 
+ Any other external devices can be connected by changing the "name" and "state" parameters in the Item object within the file and then executing connect_device.js
 
 ## 6. To alter the state of a device, go to device_config.js, change the device_name and new_state variables accordingly, then run 
 
 ```node device_config.js``` 
 
- Any and all of these changes can be tracked either via the Managment Console, in DynamoDB Table "Devices" and "Explore items"; Or by going to the /devices endpoint, which will display all of the devices currently connected.
+***Without any changes, the execution of the file will update the Motion Tracker to "Triggered", to set in motion a chain that will trigger the switching on of the Light***
+
+ Any and all of these changes can be tracked either via the Managment Console, in DynamoDB Table "Devices" and "Explore items"; Or by going to the /devices endpoint in the server, which will display all of the devices currently connected.
 
 ## 7. To disconnect a device 
 use a REST client tool like Insomnia or Postman to issue a DELETE request to the following endpoint : http://localhost:3000/devices/DEVICE_NAME, 
@@ -67,13 +83,14 @@ for example "localhost:3000/devices/Light" will disconnect the Light from the in
 
  When the image is created, run 
 
-``` docker build -p 3000:3000 smart_home_server```
+``` docker run -p 3000:3000 smart_home_server```
 
 This will start the server running in a container and the endpoints will be accessible in the same way as mentioned above. 
 
+
 ### The functionality of the IoT, that is built into the infastructure, is not fully operational yet. However, thanks to necessary permissions, the Lambda function can access devices to issue a change in the "state" parameter, when triggered, and the EventBridge eventbus is able to successfully receive events when certain devices (like Motion tracker) are triggered. Using a trigger to execute Lambda makes the infrastructure flexible, cost-effective and scalable, as the Lambda is only active until it performs its task. 
 
-At the moment the trigger between the Event Rule and Lambda function is not fully in place and therefore the "Consumption" of an event can only be tested manually by feeding into Lambda some test code that is identical to the original event that is triggered by the Event Publisher. 
+At the moment the trigger between the Event Rule and Lambda function is not fully in place and therefore the "Consumption" of an event can only be tested manually by feeding into Lambda some test code (see below) that is identical to the original event that is triggered by the Event Publisher. 
 
 ## Notes on futher works ## 
 
