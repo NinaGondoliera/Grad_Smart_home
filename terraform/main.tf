@@ -45,7 +45,6 @@ resource "aws_cloudwatch_event_target" "lambda" {
   event_bus_name = aws_cloudwatch_event_bus.smart_events.name
 }
 
-
 data "aws_iam_policy_document" "assume_role" {
   statement {
     effect = "Allow"
@@ -76,6 +75,25 @@ resource "aws_iam_role" "iam_for_lambda" {
   assume_role_policy = data.aws_iam_policy_document.assume_role.json
 }
 
+resource "aws_iam_role_policy" "lambda_policy" {
+  name = "lambda_policy"
+  role = aws_iam_role.iam_for_lambda.id
+  policy = jsonencode({
+    Version = "2012-10-17"
+    Statement = [
+      {
+        Action = [
+          "lambda:InvokeFunction", 
+          "events:PutEvents" 
+        ]
+        Effect   = "Allow"
+        Resource = aws_lambda_function.motion_lambda.arn 
+      },
+    ]
+  })
+}
+
+
 resource "aws_iam_policy" "update_db" {
   name        = "db-policy"
   description = "Allow to update items in DynamoDB"
@@ -86,7 +104,6 @@ resource "aws_iam_role_policy_attachment" "update_db_policy" {
   role       = aws_iam_role.iam_for_lambda.name
   policy_arn = aws_iam_policy.update_db.arn
 }
-
 
 
 resource "aws_lambda_function" "motion_lambda" {

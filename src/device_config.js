@@ -21,6 +21,7 @@ var params = {
   ExpressionAttributeValues: {
     ":s": new_state,
   },
+  ReturnValues: "UPDATED_NEW"
 };
 
 docClient.update(params, function (err, data) {
@@ -45,8 +46,8 @@ docClient.update(params, function (err, data) {
         console.log('DynamoDB table ARN:', tableArn);
 
         var event_detail = {
-            name: device_name,
-            state: new_state
+            name: [device_name],
+            state: [new_state]
         }
 
         var event_params = {
@@ -61,10 +62,12 @@ docClient.update(params, function (err, data) {
       };
     
       smart_events.putEvents(event_params, function (err, data) {
+        
         if (err) {
           console.log("Error", err);
         } else {
-          console.log("Success", data.Entries);
+          console.log("Success", data);
+          console.log("Data for event:", event_params)
         }
       });
     
