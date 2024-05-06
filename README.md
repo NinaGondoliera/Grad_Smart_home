@@ -71,7 +71,9 @@ for example "localhost:3000/devices/Light" will disconnect the Light from the in
 
 This will start the server running in a container and the endpoints will be accessible in the same way as mentioned above. 
 
-###
+### The functionality of the IoT, that is built into the infastructure, is not fully operational yet. However, thanks to necessary permissions, the Lambda function can access devices to issue a change in the "state" parameter, when triggered, and the EventBridge eventbus is able to successfully receive events when certain devices (like Motion tracker) are triggered. Using a trigger to execute Lambda makes the infrastructure flexible, cost-effective and scalable, as the Lambda is only active until it performs its task. 
+
+At the moment the trigger between the Event Rule and Lambda function is not fully in place and therefore the "Consumption" of an event can only be tested manually by feeding into Lambda some test code that is identical to the original event that is triggered by the Event Publisher. 
 
 ## Notes on futher works ## 
 
