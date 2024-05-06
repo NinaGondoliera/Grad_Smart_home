@@ -6,8 +6,8 @@ var docClient = new AWS.DynamoDB.DocumentClient({ apiVersion: "2012-08-10" });
 
 var smart_events = new AWS.EventBridge({ apiVersion: "2015-10-07" });
 
-var device_name = "Light";
-var new_state = "Off";
+var device_name = "Motion Tracker";
+var new_state = "Triggered";
 
 var params = {
   TableName: "Devices",

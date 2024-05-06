@@ -1,6 +1,6 @@
 const AWS = require("aws-sdk");
 
-const docClient = new AWS.DynamoDB.DocumentClient({ apiVersion: "2012-08-10" });
+const dynamoDB = new AWS.DynamoDB.DocumentClient({ apiVersion: "2012-08-10" });
 
 AWS.config.update({ region: "eu-west-2" });
 
@@ -19,31 +19,12 @@ const light_params = {
             ":s": "On",
         },
     };
-  let data; 
-  try {
-    data = await docClient.update(light_params).promise();
-    console.log("Function invoked with event:", event);
-  } catch (err) {
-  console.log(err);
-  return err;
-  }
-  return data
+
+  await dynamoDB.updateItem(light_params).promise();
+
+  return {
+    statusCode: 200,
+    body: 'Light updated successfully'
+  };
 };
 
-
-// docClient.update(light_params, function (err, data) {
-    //     if (err) {
-    //       console.log("Cannot update item Light:", err);
-    //     } else {
-    //       console.log("Item Light updated to On successfully:", data);
-    //     }
-    //   })
-
-    // try {
-    //     const data = await docClient.update(light_params).promise();
-    //     console.log("Light item updated to On:", data);
-    //     return { statusCode: 200, body: "Light item updated to On" };
-    // } catch (err) {
-    //     console.error("Error updating Light item:", err);
-    //     return { statusCode: 500, body: "Error updating Light item" };
-    // }

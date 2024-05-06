@@ -7,7 +7,7 @@ var database = new AWS.DynamoDB({ apiVersion: "2012-08-10" });
 var params = {
   TableName: "Devices",
   Item: {
-    name: { S: "Light" },
+    name: { S: "Motion Tracker" },
     state: { S: "Off" }
   },
 };
