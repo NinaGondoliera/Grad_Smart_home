@@ -1,13 +1,14 @@
-## Instructions on using the smart_home_server ##
+### Instructions on using the smart_home_server ##
 
-### This is an infrastructure involving an HTTP server, an AWS DynamoDB database to store connected devices, an AWS EventBridge eventbus to serve as the router for actions based on device behaviour and AWS Lambda for invoking device behaviour.
-### The server allows users to connect new devices through the connect_device.js. When executed, it connects two external components to the system - a Motion Tracker and a Light, both initially set to "Off". When the Motion Tracker is triggered by movement, the Light is turned "On" (Functionality not working currently). 
+This is an infrastructure involving an HTTP server, an AWS DynamoDB database to store connected devices, an AWS EventBridge eventbus to serve as the router for actions based on device behaviour and AWS Lambda for invoking device behaviour.
 
-### Device_config.js allows for switching the devices to "On", "Off", or "Triggered". Any device can be disconnected by submitting a DELETE request to the /devices/Device_name endpoint. 
+The server allows users to connect new devices through the connect_device.js. When executed, it connects two external components to the system - a Motion Tracker and a Light, both initially set to "Off". When the Motion Tracker is triggered by movement, the Light is turned "On" (Functionality not working currently). 
 
-### For accessing different endpoints it is advised to use Insomnia or Postman to allow for CRUD methods
+Device_config.js allows for switching the devices to "On", "Off", or "Triggered". Any device can be disconnected by submitting a DELETE request to the /devices/Device_name endpoint. 
 
-### GET request to the /devices endpoint displays all connected devices and their current state
+For accessing different endpoints it is advised to use Insomnia or Postman to allow for CRUD methods
+
+GET request to the /devices endpoint displays all connected devices and their current state
 
 ## 1. First make sure you are authenticated with aws, use 
 ``` aws sts get-caller-identity```
