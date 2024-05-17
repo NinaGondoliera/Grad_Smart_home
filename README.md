@@ -80,7 +80,7 @@ for example "localhost:3000/devices/Light" will disconnect the Light from the in
 
  The server can also run in a docker container locally, to do so please make sure the Docker desktop is initiated and you are authenticated. Navigate to the root level of the project directory and run 
 
-``` docker build -t smart_home_server```
+``` `docker build -t smart_home_server .``
 
  When the image is created, run 
 
