@@ -56,7 +56,7 @@ The current rule is an example, configured to react to a Motion Tracker being tr
 
 ``` npm start ```
 
-## 5. To connect external components to the infrastructure, namely a Motion Tracker (The event publisher) and a Light (event consumer), run 
+## 5. To connect external components to the infrastructure, namely a Motion Tracker (The event publisher) and a Light (event consumer), navigate to the src folder and run 
 
 ```node connect_device.js``` 
 
