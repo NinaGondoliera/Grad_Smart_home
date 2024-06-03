@@ -46,8 +46,8 @@ docClient.update(params, function (err, data) {
         console.log('DynamoDB table ARN:', tableArn);
 
         var event_detail = {
-            name: [device_name],
-            state: [new_state]
+            name: device_name,
+            state: new_state
         }
 
         var event_params = {
@@ -55,8 +55,9 @@ docClient.update(params, function (err, data) {
           {
             Detail: JSON.stringify(event_detail),
             DetailType: "motionTriggered",
-            Resources: [tableArn],
-            Source: "smart_home_server"
+            //Resources: [tableArn],
+            Source: "smart_home_server",
+            EventBusName: 'smart_events'
           },
         ],
       };
@@ -64,9 +65,9 @@ docClient.update(params, function (err, data) {
       smart_events.putEvents(event_params, function (err, data) {
         
         if (err) {
-          console.log("Error", err);
+          console.log("Error putting event", err);
         } else {
-          console.log("Success", data);
+          console.log("Event put successfully", data);
           console.log("Data for event:", event_params)
         }
       });

@@ -119,5 +119,13 @@ resource "aws_cloudwatch_log_group" "lambda_log_group" {
   retention_in_days = 5
 }
 
+resource "aws_lambda_permission" "allow_event_invocation" {
+  statement_id  = "AllowExecutionFromEventBridge"
+  action        = "lambda:InvokeFunction"
+  function_name = aws_lambda_function.motion_lambda.function_name
+  principal     = "events.amazonaws.com"
+  source_arn    = aws_cloudwatch_event_rule.motion_triggered.arn
+}
+
 
 
