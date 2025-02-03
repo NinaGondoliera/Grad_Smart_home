@@ -29,52 +29,34 @@ docClient.update(params, function (err, data) {
     console.log("Error updating item:", err);
   } else {
     console.log("Item updated successfully:", data);
-      
-    const dynamoDB = new AWS.DynamoDB({ apiVersion: '2012-08-10' });
-    
-    const tableName = 'Devices';
-    
-    const db_params = {
-      TableName: tableName,
-    };
-    
-    dynamoDB.describeTable(db_params, function(err, data) {
-      if (err) {
-        console.error('Error describing table:', err);
-      } else {
-        const tableArn = data.Table.TableArn;
-        console.log('DynamoDB table ARN:', tableArn);
 
-        var event_detail = {
-            name: device_name,
-            state: new_state
-        }
-
-        var event_params = {
-           Entries: [
-          {
-            Detail: JSON.stringify(event_detail),
-            DetailType: "motionTriggered",
-            //Resources: [tableArn],
-            Source: "smart_home_server",
-            EventBusName: 'smart_events'
-          },
-        ],
-      };
-    
-      smart_events.putEvents(event_params, function (err, data) {
-        
-        if (err) {
-          console.log("Error putting event", err);
-        } else {
-          console.log("Event put successfully", data);
-          console.log("Data for event:", event_params)
-        }
-      });
-    
-      }
-    });
+  var event_detail = {
+      name: device_name,
+      state: new_state
   }
+
+  var event_params = {
+     Entries: [
+    {
+      Detail: JSON.stringify(event_detail),
+      DetailType: "motionTriggered",
+      Source: "smart_home_server",
+      EventBusName: 'smart_events'
+    },
+  ],
+};
+
+smart_events.putEvents(event_params, function (err, data) {
+  
+  if (err) {
+    console.log("Error putting event", err);
+  } else {
+    console.log("Event put successfully", data);
+    console.log("Data for event:", event_params)
+  }
+});
+      
+}
 });
 
 

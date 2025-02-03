@@ -69,7 +69,7 @@ The current rule is an example, configured to react to a Motion Tracker being tr
 
 ***Without any changes, the execution of the file will update the Motion Tracker to "Triggered", to set in motion a chain that will trigger the switching on of the Light***
 
- Any and all of these changes can be tracked either via the Managment Console, in DynamoDB Table "Devices" and "Explore items"; Or by going to the /devices endpoint in the server, which will display all of the devices currently connected.
+ Any and all of these changes can be tracked either via the AWS Managment Console, in DynamoDB Table "Devices" via "Explore items"; Or by going to the /devices endpoint in the server, which will display all of the devices currently connected and their state: "On", "Off" or "Triggered" respectfully. 
 
 ## 7. To disconnect a device 
 use a REST client tool like Insomnia or Postman to issue a DELETE request to the following endpoint : http://localhost:3000/devices/DEVICE_NAME, 
