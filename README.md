@@ -88,14 +88,17 @@ for example "localhost:3000/devices/Light" will disconnect the Light from the in
 
 This will start the server running in a container and the endpoints will be accessible in the same way as mentioned above. 
 
+## 9. Observing the functionality of the Smart Home IoT and testing
 
-### The functionality of the IoT, that is built into the infastructure, is not fully operational yet. However, thanks to necessary permissions, the Lambda function can access devices to issue a change in the "state" parameter, when triggered, and the EventBridge eventbus is able to successfully receive events when certain devices (like Motion tracker) are triggered. Using a trigger to execute Lambda makes the infrastructure flexible, cost-effective and scalable, as the Lambda is only active until it performs its task. 
 
-At the moment the trigger between the Event Rule and Lambda function is not fully in place and therefore the "Consumption" of an event can only be tested manually by feeding into Lambda some test code (see below) that is identical to the original event that is triggered by the Event Publisher. 
+### The functionality of the IoT, that is built into the infastructure, is fully operational. Thanks to necessary permissions, the Lambda function can access devices to issue a change in the "state" parameter, when triggered, and the EventBridge eventbus is able to successfully receive events when certain devices (like Motion tracker) are triggered. Using a trigger to execute Lambda makes the infrastructure flexible, cost-effective and scalable, as the Lambda is only active until it performs its task. 
 
-## Notes on futher works ## 
+The "Consumption" of an event can be tested by altering the state of the Motion Tracker (set to "triggered") and executing the device_config.js file. This mimics a real-life event when the IoT system will come to action and the Light will be switched on. It happens via the EventBus, which receives the necessary data, compares it to the set criteria and sets off the Lambda function, which is responsible for setting into motion the chain of events to switch on the Light. 
 
-### Currently the trigger between the Motion Tracker and the Light is not functioning as intended, but the functionality of separate elements can be tracked via AWS Monitoring for EventBridge, Lambda and DynamoDB separately in the Management Console. 
+When desired, the code can be tested manually by feeding into Lambda some test code (see below) that is identical to the original event that iwould be triggered by the Event Publisher. This allows for an isolated testing of the Lambda function. 
+
+The functionality of all of the elements in the Smart Home IoT system can be tracked via AWS Monitoring in the Management Console.
+
 
 ### The Lambda function successfully updates the Light device to "On", when triggered in the following test event in the management console : 
 
@@ -108,4 +111,4 @@ At the moment the trigger between the Event Rule and Lambda function is not full
   }
 }
 
-### The EventBridge has a successful event posted when the Motion Tracker state is changed to "Triggered" in device_config.js.
+### The EventBridge subsequesntly displays a successful event posted when the Motion Tracker state is changed to "Triggered" in device_config.js. and executed. 
